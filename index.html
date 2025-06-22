@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creativity Spark Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff6f61;
+            --secondary-color: #8b5cf6;
+            --accent-color: #10b981;
+            --bg-gradient: linear-gradient(135deg, #ff6f61, #8b5cf6, #10b981);
+            --text-dark: #1f2937;
+            --text-light: #fff;
+            --card-bg: rgba(255, 255, 255, 0.92);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            animation: fadeIn 1.2s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .header h1 {
+            font-family: 'Comic+Neue', cursive;
+            font-size: 3.5rem;
+            color: var(--text-light);
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+            animation: bounce 1.5s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .header .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            opacity: 0.85;
+            margin-top: 0.8rem;
+            animation: slideIn 1.2s ease-out 0.3s;
+            animation-fill-mode: both;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tab {
+            font-family: 'Comic+Neue', cursive;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-light);
+            padding: 0.6rem 1.2rem;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.4s ease;
+            border-radius: 8px;
+        }
+
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .tab.active {
+            color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            margin-bottom: 2rem;
+            animation: popIn 0.6s ease-out;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .field-label {
+            display: block;
+            font-family: 'Comic+Neue', cursive;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.6rem;
+            font-size: 1.1rem;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(255, 111, 97, 0.4);
+        }
+
+        button {
+            background: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: 10px;
+            padding: 0.9rem 2.5rem;
+            font-family: 'Comic+Neue', cursive;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:hover {
+            background: #ef4444;
+            transform: scale(1.05);
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .profile-panel {
+            background: linear-gradient(145deg, #ffffff, #ede9fe);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .profile-panel span {
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .logout-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-family: 'Comic+Neue', cursive;
+            font-weight: 700;
+            float: right;
+            transition: all 0.3s ease;
+        }
+
+        .logout-link:hover {
+            color: #ef4444;
+            text-decoration: underline;
+            transform: scale(1.1);
+        }
+
+        .ai-tip {
+            background: #fef08a;
+            color: var(--text-dark);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-family: 'Comic+Neue', cursive;
+            animation: wiggle 0.5s ease-in-out;
+        }
+
+        @keyframes wiggle {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(-2deg); }
+            75% { transform: rotate(2deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .creative-game {
+            background: linear-gradient(145deg, #e0f2fe, #bae6fd);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .game-question {
+            font-family: 'Comic+Neue', cursive;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .game-input {
+            margin-bottom: 0.8rem;
+        }
+
+        .game-result {
+            color: var(--accent-color);
+            font-weight: 500;
+            margin-top: 0.8rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .ai-feature-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .feature-tag {
+            background: #fff;
+            border: 2px solid var(--secondary-color);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-size: 0.95rem;
+            color: var(--secondary-color);
+            transition: all 0.3s ease;
+        }
+
+        .feature-tag.active {
+            background: var(--secondary-color);
+            color: var(--text-light);
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .history {
+            max-height: 320px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .history-item {
+            background: #fff;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 5px solid var(--primary-color);
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .growth-bar {
+            background: #e5e7eb;
+            border-radius: 10px;
+            height: 24px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .growth-fill {
+            background: var(--primary-color);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease-in-out;
+        }
+
+        .stat-box {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            animation: popIn 0.6s ease-out;
+        }
+
+        .stat-label {
+            font-family: 'Comic+Neue', cursive;
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        #modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            max-width: 600px;
+            margin: 10vh auto;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: popIn 0.5s ease-out;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            .header .subtitle {
+                font-size: 1.1rem;
+            }
+            .tab {
+                font-size: 1.1rem;
+                padding: 0.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas-bg"></canvas>
+    <div class="container">
+        <div class="header">
+            <h1>Creativity Spark Studio</h1>
+            <div class="subtitle">Unleash your imagination with playful AI tools and quirky challenges!</div>
+        </div>
+
+        <div class="tabs" id="tabs">
+            <div class="tab" id="tab-login">Login</div>
+            <div class="tab" id="tab-register">Register</div>
+            <div class="tab hidden" id="tab-dashboard">Dashboard</div>
+        </div>
+
+        <div id="login-page" class="card">
+            <form id="login-form" autocomplete="off">
+                <label class="field-label">Username</label>
+                <input type="text" id="login-username" required>
+                <label class="field-label">Password</label>
+                <input type="password" id="login-password" required>
+                <button type="submit">Login</button>
+                <div id="login-msg" style="color: #ef4444; margin-top: 0.5rem;"></div>
+            </form>
+        </div>
+
+        <div id="register-page" class="card hidden">
+            <form id="register-form" autocomplete="off">
+                <label class="field-label">Username</label>
+                <input type="text" id="reg-username" required>
+                <label class="field-label">Email</label>
+                <input type="email" id="reg-email" required>
+                <label class="field-label">Password</label>
+                <input type="password" id="reg-password" required minlength="4">
+                <button type="submit">Register</button>
+                <div id="register-msg" style="color: #ef4444; margin-top: 0.5rem;"></div>
+            </form>
+        </div>
+
+        <div id="dashboard" class="dashboard hidden">
+            <div>
+                <div class="profile-panel">
+                    Welcome, <span id="profile-username"></span> (<span id="profile-email"></span>)!
+                    <span class="logout-link" id="logout-link">Logout</span>
+                    <div style="margin-top: 0.5rem;">
+                        Age group: <b id="profile-age"></b>, Interest: <b id="profile-interest"></b>
+                    </div>
+                </div>
+                <div class="card">
+                    <form id="creativity-form" autocomplete="off">
+                        <label class="field-label">Your Creative Work</label>
+                        <textarea id="studentWork" required placeholder="Write your story, description, or creative idea here..." rows="6"></textarea>
+                        <label class="field-label">Age Group</label>
+                        <select id="ageGroup">
+                            <option value="child">Child</option>
+                            <option value="teen" selected>Teen</option>
+                            <option value="adult">Adult</option>
+                            <option value="senior">Senior</option>
+                        </select>
+                        <label class="field-label">Interest/Topic</label>
+                        <input type="text" id="interest" value="story writing" required>
+                        <button type="submit" id="submitBtn">Get AI Creativity Feedback</button>
+                    </form>
+                </div>
+                <div id="result" class="card hidden">
+                    <h3>AI Suggestions & Feedback</h3>
+                    <div id="aiPrompt" class="ai-prompt"></div>
+                    <div id="aiFeedback" class="ai-feedback"></div>
+                    <div><span class="ai-feature" id="aiFeature"></span></div>
+                    <button id="nextFeatureBtn" style="background: #f59e0b; color: #1f2937; margin-top: 1rem;">Try Another Feature</button>
+                </div>
+                <div class="ai-tip" id="aiTip" style="display: none;"></div>
+                <div class="creative-game" id="creativeGame"></div>
+            </div>
+            <div>
+                <div class="stat-box">
+                    <div class="stat-label">Creativity Score</div>
+                    <div class="growth-bar"><div class="growth-fill" id="growthFill" style="width: 0%;"></div></div>
+                    <div id="growthStats"></div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">AI Features Used</div>
+                    <div class="ai-feature-list" id="featureList"></div>
+                </div>
+                <div class="stat-box history" id="historyDiv">
+                    <h3>Session History</h3>
+                    <div id="historyList"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal">
+            <div class="modal-content">
+                <div id="modal-content"></div>
+                <button onclick="document.getElementById('modal').style.display='none';">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Canvas Background Animation
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 8 + 2;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+                this.color = `hsl(${Math.random() * 360}, 80%, 60%)`;
+                this.shape = Math.random() > 0.5 ? 'circle' : 'star';
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.3) this.size -= 0.01;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                if (this.shape === 'circle') {
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                } else {
+                    this.drawStar(this.x, this.y, this.size);
+                }
+                ctx.fill();
+            }
+            drawStar(x, y, r) {
+                const spikes = 5;
+                const step = Math.PI / spikes;
+                let rot = Math.PI / 2 * 3;
+                ctx.beginPath();
+                ctx.moveTo(x, y - r);
+                for (let i = 0; i < spikes; i++) {
+                    ctx.lineTo(x + Math.cos(rot) * r, y + Math.sin(rot) * r);
+                    rot += step;
+                    ctx.lineTo(x + Math.cos(rot) * (r / 2), y + Math.sin(rot) * (r / 2));
+                    rot += step;
+                }
+                ctx.closePath();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 120; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((particle, i) => {
+                particle.update();
+                particle.draw();
+                if (particle.size <= 0.3) {
+                    particles.splice(i, 1);
+                    particles.push(new Particle());
+                }
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        });
+
+        initParticles();
+        animateParticles();
+
+        // --- USER MANAGEMENT ---
+        let users = JSON.parse(localStorage.getItem('users') || '{}');
+        let sessionUser = JSON.parse(localStorage.getItem('sessionUser') || 'null');
+        let creativeDB = [];
+        let sessionHistory = [];
+        let usedFeatures = new Set();
+        let growthPoints = 0;
+        let growthMax = 20;
+        let featuredAI = [];
+
+        const AI_FEATURES = [
+            "what_if", "alternative_ending", "emotion_analysis", "visualization_tip", "dialogue_suggestion",
+            "plot_twist", "soundtrack_idea", "problem_solving_hint", "theme_enhancer", "style_challenge",
+            "perspective_shift", "creativity_score", "risk_meter", "growth_tracker", "quote_generator",
+            "random_fact", "mood_board", "word_cloud", "conflict_advice", "collaboration_tip", "character_builder"
+        ];
+        const FEATURE_DESCS = {
+            what_if: "Suggests a creative 'what if' scenario for your idea.",
+            alternative_ending: "Proposes a different ending or solution.",
+            emotion_analysis: "Analyzes the emotions in your work.",
+            visualization_tip: "Gives tips to visualize your idea.",
+            dialogue_suggestion: "Suggests realistic dialogue for characters.",
+            plot_twist: "Adds a plot twist to your story.",
+            soundtrack_idea: "Suggests music or soundtracks.",
+            problem_solving_hint: "Hints to solve creative problems.",
+            theme_enhancer: "Strengthens your theme.",
+            style_challenge: "Encourages trying a new style.",
+            perspective_shift: "Shifts the perspective of your work.",
+            creativity_score: "Rates your originality.",
+            risk_meter: "Encourages creative risks.",
+            growth_tracker: "Shows your creative growth.",
+            quote_generator: "Generates an original quote.",
+            random_fact: "Offers a fascinating fact.",
+            mood_board: "Inspires with mood board ideas.",
+            word_cloud: "Builds a word cloud from your text.",
+            conflict_advice: "Adds conflict for depth.",
+            collaboration_tip: "Tips for working with others.",
+            character_builder: "Helps you invent new characters."
+        };
+
+        // --- Tab Management ---
+        const tabLogin = document.getElementById('tab-login');
+        const tabRegister = document.getElementById('tab-register');
+        const tabDashboard = document.getElementById('tab-dashboard');
+        const loginPage = document.getElementById('login-page');
+        const registerPage = document.getElementById('register-page');
+        const dashboard = document.getElementById('dashboard');
+        function setTab(tab) {
+            [tabLogin, tabRegister, tabDashboard].forEach(t => t.classList.remove('active'));
+            [loginPage, registerPage, dashboard].forEach(p => p.classList.add('hidden'));
+            if (tab === "login") { tabLogin.classList.add('active'); loginPage.classList.remove('hidden'); }
+            else if (tab === "register") { tabRegister.classList.add('active'); registerPage.classList.remove('hidden'); }
+            else if (tab === "dashboard" && sessionUser) { 
+                tabDashboard.classList.add('active'); 
+                dashboard.classList.remove('hidden'); 
+            } else {
+                setTab("login"); // Redirect to login if not authenticated
+            }
+        }
+        tabLogin.onclick = () => setTab("login");
+        tabRegister.onclick = () => setTab("register");
+        tabDashboard.onclick = () => setTab("dashboard");
+
+        // --- Registration ---
+        document.getElementById('register-form').onsubmit = function(e) {
+            e.preventDefault();
+            let username = document.getElementById('reg-username').value.trim();
+            let email = document.getElementById('reg-email').value.trim();
+            let password = document.getElementById('reg-password').value;
+            let msg = document.getElementById('register-msg');
+            if (!username || !email || !password) { msg.textContent = "Please fill all fields."; return; }
+            if (users[username]) { msg.textContent = "Username already exists."; return; }
+            users[username] = {username, email, password, age_group:"teen", interest:"story writing"};
+            localStorage.setItem('users', JSON.stringify(users));
+            msg.style.color = "#10b981"; msg.textContent = "Registered! Please login.";
+            setTimeout(() => { setTab('login'); }, 900);
+        };
+
+        // --- Login ---
+        document.getElementById('login-form').onsubmit = function(e) {
+            e.preventDefault();
+            let username = document.getElementById('login-username').value.trim();
+            let password = document.getElementById('login-password').value;
+            let msg = document.getElementById('login-msg');
+            if (!users[username]) { msg.textContent = "User not found."; return; }
+            if (users[username].password !== password) { msg.textContent = "Incorrect password."; return; }
+            sessionUser = users[username];
+            localStorage.setItem('sessionUser', JSON.stringify(sessionUser));
+            msg.textContent = "";
+            setTab("dashboard");
+            tabDashboard.classList.remove('hidden');
+            onLogin();
+        };
+
+        // --- Logout ---
+        document.getElementById('logout-link').onclick = function() {
+            sessionUser = null;
+            localStorage.removeItem('sessionUser');
+            setTab("login");
+            tabDashboard.classList.add('hidden');
+        };
+
+        // --- Load Creativity Database (JSON) ---
+        fetch('creativity_responses.json')
+            .then(response => response.json())
+            .then(data => {
+                creativeDB = data;
+                if (sessionUser) { 
+                    setTab('dashboard'); 
+                    tabDashboard.classList.remove('hidden'); 
+                    onLogin(); 
+                } else {
+                    setTab('login');
+                }
+            })
+            .catch(() => {
+                alert("Could not load creativity_responses.json. Place it with index.html and use a local server.");
+            });
+
+        // --- Dashboard User Profile ---
+        function onLogin() {
+            document.getElementById('profile-username').textContent = sessionUser.username;
+            document.getElementById('profile-email').textContent = sessionUser.email;
+            document.getElementById('profile-age').textContent = sessionUser.age_group;
+            document.getElementById('profile-interest').textContent = sessionUser.interest;
+            document.getElementById('ageGroup').value = sessionUser.age_group;
+            document.getElementById('interest').value = sessionUser.interest;
+            sessionHistory = [];
+            usedFeatures = new Set();
+            growthPoints = 0;
+            updateGrowth();
+            updateFeatureList();
+            updateHistory();
+            featuredAI = [];
+            document.getElementById('result').classList.add('hidden');
+            document.getElementById('aiTip').style.display='none';
+            document.getElementById('creativeGame').innerHTML = "";
+            setTimeout(() => { showCreativeGame(); }, 1000);
+        }
+
+        // --- Personalization: Update Profile on form change ---
+        document.getElementById('ageGroup').onchange =
+        document.getElementById('interest').onchange = function() {
+            if (sessionUser) {
+                sessionUser.age_group = document.getElementById('ageGroup').value;
+                sessionUser.interest = document.getElementById('interest').value;
+                users[sessionUser.username] = sessionUser;
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('sessionUser', JSON.stringify(sessionUser));
+                document.getElementById('profile-age').textContent = sessionUser.age_group;
+                document.getElementById('profile-interest').textContent = sessionUser.interest;
+            }
+        };
+
+        // --- AI Logic: Find best response for input + feature ---
+        function findBestResponse(age_group, interest, student_work, feature=null) {
+            let filtered = creativeDB.filter(entry =>
+                entry.age_group === age_group &&
+                entry.interest.toLowerCase() === interest.toLowerCase() &&
+                (feature ? entry.ai_feature === feature : true)
+            );
+            if (student_work) {
+                filtered = filtered.filter(entry => student_work.toLowerCase().includes(entry.topic.toLowerCase()));
+            }
+            if (!filtered.length) filtered = creativeDB;
+            let i = Math.floor(Math.random() * filtered.length);
+            return filtered[i];
+        }
+
+        // --- Creativity Form Submission ---
+        document.getElementById('creativity-form').onsubmit = function(e) {
+            e.preventDefault();
+            let student_work = document.getElementById('studentWork').value.trim();
+            let age_group = document.getElementById('ageGroup').value;
+            let interest = document.getElementById('interest').value.trim();
+            let ai = findBestResponse(age_group, interest, student_work);
+            showAIResult(ai);
+            sessionHistory.unshift({
+                student_work, ai_prompt: ai.ai_prompt, ai_feedback: ai.feedback,
+                ai_feature: ai.ai_feature, topic: ai.topic, timestamp: new Date().toLocaleString()
+            });
+            usedFeatures.add(ai.ai_feature);
+            growthPoints = Math.min(growthPoints + 1, growthMax);
+            updateGrowth();
+            updateFeatureList();
+            updateHistory();
+            showAITip();
+            showCreativeGame();
+        };
+
+        // --- Show AI Result ---
+        function showAIResult(ai) {
+            document.getElementById('result').classList.remove('hidden');
+            document.getElementById('aiPrompt').innerHTML = `<b>Prompt:</b> ${ai.ai_prompt}`;
+            document.getElementById('aiFeedback').innerHTML = `<b>Feedback:</b> ${ai.feedback}`;
+            document.getElementById('aiFeature').innerHTML = `AI Feature: <span style="color:#f59e0b;font-weight:bold">${ai.ai_feature}</span> - ${FEATURE_DESCS[ai.ai_feature] || ''}`;
+            featuredAI = [ai.ai_feature];
+        }
+
+        // --- Try Another AI Feature Button ---
+        document.getElementById('nextFeatureBtn').onclick = function() {
+            let student_work = document.getElementById('studentWork').value.trim();
+            let age_group = document.getElementById('ageGroup').value;
+            let interest = document.getElementById('interest').value.trim();
+            let unused = AI_FEATURES.filter(f => !usedFeatures.has(f));
+            let nextFeature = unused.length ? unused[Math.floor(Math.random()*unused.length)] : null;
+            let ai = findBestResponse(age_group, interest, student_work, nextFeature);
+            showAIResult(ai);
+            sessionHistory.unshift({
+                student_work, ai_prompt: ai.ai_prompt, ai_feedback: ai.feedback,
+                ai_feature: ai.ai_feature, topic: ai.topic, timestamp: new Date().toLocaleString()
+            });
+            usedFeatures.add(ai.ai_feature);
+            growthPoints = Math.min(growthPoints + 1, growthMax);
+            updateGrowth();
+            updateFeatureList();
+            updateHistory();
+            showAITip();
+            showCreativeGame();
+        };
+
+        // --- Update Growth ---
+        function updateGrowth() {
+            let percent = Math.round((growthPoints / growthMax) * 100);
+            document.getElementById('growthFill').style.width = percent + "%";
+            let comment = "";
+            if (growthPoints < 5) comment = "You're just getting started! Try more features for creative growth.";
+            else if (growthPoints < growthMax) comment = "Great progress! Keep exploring AI features!";
+            else comment = "Amazing! You've unlocked all creativity features for this session!";
+            document.getElementById('growthStats').textContent = `Progress: ${growthPoints}/${growthMax} — ${comment}`;
+        }
+
+        // --- Update Feature List ---
+        function updateFeatureList() {
+            let featureList = document.getElementById('featureList');
+            featureList.innerHTML = "";
+            AI_FEATURES.forEach(f => {
+                let el = document.createElement('span');
+                el.className = 'feature-tag';
+                el.textContent = f.replace(/_/g, " ");
+                if (usedFeatures.has(f)) el.classList.add('active');
+                featureList.appendChild(el);
+            });
+        }
+
+        // --- Update History ---
+        function updateHistory() {
+            let historyList = document.getElementById('historyList');
+            historyList.innerHTML = "";
+            sessionHistory.slice(0,20).forEach(item => {
+                let el = document.createElement('div');
+                el.className = 'history-item';
+                el.innerHTML = `
+                    <div class="student-work">You: ${item.student_work}</div>
+                    <div class="ai-prompt">AI Prompt: ${item.ai_prompt}</div>
+                    <div class="ai-feature">Feature: ${item.ai_feature}</div>
+                    <div class="ai-feedback">Feedback: ${item.ai_feedback}</div>
+                    <div style="font-size:0.9em;color:#6b7280;">${item.timestamp}</div>
+                `;
+                historyList.appendChild(el);
+            });
+        }
+
+        // --- Show AI Tip ---
+        function showAITip() {
+            let tips = [
+                "Tip: Try using different interests or age groups for new creative prompts.",
+                "Tip: Click 'Try Another Feature' for more AI-powered ideas.",
+                "Tip: Use the session history to track your creativity journey.",
+                "Tip: Collaboration can spark new ideas. Try the 'collaboration_tip' feature!",
+                "Tip: Use the 'mood_board' feature for visual inspiration.",
+                "Tip: The 'word_cloud' feature helps you find your most-used words."
+            ];
+            let aiTip = document.getElementById('aiTip');
+            aiTip.textContent = tips[Math.floor(Math.random()*tips.length)];
+            aiTip.style.display = "block";
+        }
+
+        // --- Creative Game/Challenge ---
+        function showCreativeGame() {
+            let games = [
+                {
+                    title: "Word Cloud Challenge",
+                    question: "Paste your creative work and see your personal word cloud:",
+                    run: (text) => {
+                        let words = text.split(/\W+/).filter(w=>w.length>3);
+                        let counts = {};
+                        words.forEach(w=>{w=w.toLowerCase(); counts[w]=(counts[w]||0)+1;});
+                        let top = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,10);
+                        return "Top words: " + top.map(x => `<b>${x[0]}</b>(${x[1]})`).join(", ");
+                    }
+                },
+                {
+                    title: "Random Fact Generator",
+                    question: "Click to get a random creative fact:",
+                    run: () => {
+                        let facts = [
+                            "Did you know? The word 'robot' comes from a Czech word meaning 'forced labor'.",
+                            "The Mona Lisa has no eyebrows.",
+                            "The world's largest poem is more than 220,000 verses long.",
+                            "Music can boost plant growth!",
+                            "Creativity increases when you take short walks.",
+                            "Blue is the most popular favorite color worldwide."
+                        ];
+                        return facts[Math.floor(Math.random()*facts.length)];
+                    }
+                },
+                {
+                    title: "Quote Creator",
+                    question: "Write a theme and get an original quote:",
+                    run: (text) => `"${text} is the seed from which all dreams grow."`
+                },
+                {
+                    title: "Mood Board Visualizer",
+                    question: "Type a mood (e.g., hope, mystery) and get image idea suggestions:",
+                    run: (mood) => `Images: ${mood}, sunrise, open road, glowing light, deep forest, smiling faces.`
+                }
+            ];
+            let idx = Math.floor(Math.random()*games.length);
+            let game = games[idx];
+            let html = `<div><div class="game-question">${game.title}:</div><div class="game-desc">${game.question}</div>
+                <input class="game-input" type="text" id="gameInput" placeholder="Enter here (optional)">
+                <button class="game-btn" onclick="runGame()">Go</button>
+                <div class="game-result" id="gameResult"></div></div>`;
+            document.getElementById('creativeGame').innerHTML = html;
+            window.runGame = function() {
+                let val = document.getElementById('gameInput').value;
+                document.getElementById('gameResult').innerHTML = game.run(val);
+            }
+        };
+
+        // --- On Load ---
+        if (sessionUser) { 
+            setTab('dashboard'); 
+            tabDashboard.classList.remove('hidden'); 
+            onLogin();
+        } else { 
+            setTab('login'); 
+            tabDashboard.classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
